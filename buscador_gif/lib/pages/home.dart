@@ -38,26 +38,47 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Image.network("https://developers.giphy.com/branch/master/static/header-logo-0fec0225d189bc0eae27dac3e3770582.gif"),
+        title: Image.network(
+            "https://developers.giphy.com/branch/master/static/header-logo-0fec0225d189bc0eae27dac3e3770582.gif"),
         centerTitle: true,
         backgroundColor: Colors.black,
       ),
       backgroundColor: Colors.black,
       body: Column(
-        children: const[
-          Padding(
+        children: [
+          const Padding(
             padding: EdgeInsets.all(10),
             child: TextField(
-            decoration: InputDecoration(
-              labelText: 'Pesquisar',
-              labelStyle: TextStyle(color: Colors.white),
-              border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: 'Pesquisar',
+                labelStyle: TextStyle(color: Colors.white),
+                border: OutlineInputBorder(),
+                hoverColor: Colors.amber,
+              ),
+              style: TextStyle(color: Colors.white, fontSize: 18),
+              textAlign: TextAlign.center,
             ),
-            style: TextStyle(color: Colors.white, fontSize: 18),
-            textAlign: TextAlign.center,
           ),
-            
-            )
+          Expanded(
+              child: FutureBuilder(
+                  future: _getGit(),
+                  builder: (context, snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.waiting:
+                      case ConnectionState.none:
+                        return Container(
+                          width: 200,
+                          height: 200,
+                          child: const CircularProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.white),
+                            strokeWidth: 5.0,
+                          ),
+                        );
+                      default:
+                        return Container();
+                    }
+                  }))
         ],
       ),
     );
